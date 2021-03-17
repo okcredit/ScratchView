@@ -104,6 +104,7 @@ public class ScratchView extends View {
     private int mThreadCount = 0;
 
     Bitmap scratchBitmap;
+    Bitmap originalScratchBitmap;
 
 
     public ScratchView(Context context) {
@@ -157,9 +158,9 @@ public class ScratchView extends View {
 
         int overlayImage = arr.getResourceId(R.styleable.ScratchView_overlay_image, R.drawable.ic_scratch_pattern);
 
-        scratchBitmap = BitmapFactory.decodeResource(getResources(), overlayImage);
-        if (scratchBitmap == null) {
-            scratchBitmap = drawableToBitmap(ContextCompat.getDrawable(getContext(), overlayImage));
+        originalScratchBitmap = BitmapFactory.decodeResource(getResources(), overlayImage);
+        if (originalScratchBitmap == null) {
+            originalScratchBitmap = drawableToBitmap(ContextCompat.getDrawable(getContext(), overlayImage));
         }
     }
 
@@ -172,7 +173,7 @@ public class ScratchView extends View {
             tileMode = "CLAMP";
         }
 
-        scratchBitmap = Bitmap.createScaledBitmap(scratchBitmap, (int) getWidth(), (int) getHeight(), false);
+        scratchBitmap = Bitmap.createScaledBitmap(originalScratchBitmap, (int) getWidth(), (int) getHeight(), false);
         mDrawable = new BitmapDrawable(getResources(), scratchBitmap);
 
         switch (tileMode) {
