@@ -157,18 +157,21 @@ public class ScratchView extends View {
 
         int overlayImage = arr.getResourceId(R.styleable.ScratchView_overlay_image, R.drawable.ic_scratch_pattern);
 
-        float overlayWidth = arr.getDimension(R.styleable.ScratchView_overlay_width, 1000);
-        float overlayHeight = arr.getDimension(R.styleable.ScratchView_overlay_height, 1000);
+        scratchBitmap = BitmapFactory.decodeResource(getResources(), overlayImage);
+        if (scratchBitmap == null) {
+            scratchBitmap = drawableToBitmap(ContextCompat.getDrawable(getContext(), overlayImage));
+        }
+    }
 
+    private void setupScratchDrawable() {
+        TypedArray arr = mContext.obtainStyledAttributes(attrs, R.styleable.ScratchView,
+                styleAttr, 0);
 
         String tileMode = arr.getString(R.styleable.ScratchView_tile_mode);
         if (tileMode == null) {
             tileMode = "CLAMP";
         }
-        scratchBitmap = BitmapFactory.decodeResource(getResources(), overlayImage);
-        if (scratchBitmap == null) {
-            scratchBitmap = drawableToBitmap(ContextCompat.getDrawable(getContext(), overlayImage));
-        }
+
         scratchBitmap = Bitmap.createScaledBitmap(scratchBitmap, (int) getWidth(), (int) getHeight(), false);
         mDrawable = new BitmapDrawable(getResources(), scratchBitmap);
 
@@ -185,7 +188,6 @@ public class ScratchView extends View {
             default:
                 mDrawable.setTileModeXY(Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         }
-
     }
 
     /**
@@ -201,6 +203,7 @@ public class ScratchView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        setupScratchDrawable();
         mScratchBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mScratchBitmap);
 
