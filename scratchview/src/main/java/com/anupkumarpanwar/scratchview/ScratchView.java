@@ -169,7 +169,7 @@ public class ScratchView extends View {
         if (scratchBitmap == null) {
             scratchBitmap = drawableToBitmap(ContextCompat.getDrawable(getContext(), overlayImage));
         }
-        scratchBitmap = Bitmap.createScaledBitmap(scratchBitmap, (int) overlayWidth, (int) overlayHeight, false);
+        scratchBitmap = Bitmap.createScaledBitmap(scratchBitmap, (int) getWidth(), (int) getHeight(), false);
         mDrawable = new BitmapDrawable(getResources(), scratchBitmap);
 
         switch (tileMode) {
